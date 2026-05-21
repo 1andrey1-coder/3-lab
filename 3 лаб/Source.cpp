@@ -1,73 +1,78 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <numeric>
+#include <stdio.h>
+#include <string.h>
 
-using namespace std;
-
-
-void processString() {
-    string s;
-    cout << "Ââåäèòå ñòðîêó (äî 80 ñèìâîëîâ): ";
-    getline(cin, s);
-    if (s.length() > 80) s = s.substr(0, 80);
-
-    for (char& c : s) {
-        if (c == 'a') c = 'A';
-        else if (c == 'b') c = 'B';
-    }
-    cout << "Ðåçóëüòàò: " << s << endl;
-}
-
-
-void processMatrix() {
-    int n;
-    cout << "Ââåäèòå ðàçìåð ìàòðèöû (n x n): ";
-    cin >> n;
-
-    vector<vector<int>> matrix(n, vector<int>(n));
-    cout << "Ââåäèòå ýëåìåíòû ìàòðèöû:" << endl;
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            cin >> matrix[i][j];
-        }
-    }
-
-    long long mainDiag = 0, secDiag = 0;
-    for (int i = 0; i < n; ++i) {
-        mainDiag += matrix[i][i];
-        secDiag += matrix[i][n - 1 - i];
-    }
-    cout << "Ñóììà ãëàâíîé äèàãîíàëè: " << mainDiag << endl;
-    cout << "Ñóììà ïîáî÷íîé äèàãîíàëè: " << secDiag << endl;
-
-   
-    bool isMagic = true;
-    if (mainDiag != secDiag) isMagic = false;
-
-    if (isMagic) {
-        // Ïðîâåðêà ñòðîê è ñòîëáöîâ
-        for (int i = 0; i < n; ++i) {
-            long long rowSum = 0, colSum = 0;
-            for (int j = 0; j < n; ++j) {
-                rowSum += matrix[i][j];
-                colSum += matrix[j][i];
-            }
-            if (rowSum != mainDiag || colSum != mainDiag) {
-                isMagic = false;
-                break;
-            }
-        }
-    }
-
-    if (isMagic) cout << "Ìàòðèöà ÿâëÿåòñÿ ìàãè÷åñêèì êâàäðàòîì." << endl;
-    else cout << "Ìàòðèöà íå ÿâëÿåòñÿ ìàãè÷åñêèì êâàäðàòîì." << endl;
-}
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 int main() {
-    system("chcp 65001 > nul"); // ðóññ
-    processString();
-    cout << "----------------" << endl;
-    processMatrix();
+    #ifdef _WIN32
+    SetConsoleCP(65001);
+    SetConsoleOutputCP(65001);
+    #endif
+
+    char s[100];
+
+    printf("=== Ð—ÐÐ”ÐÐÐ˜Ð• 1 ===\n");
+    printf("Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÑÑ‚Ñ€Ð¾ÐºÑƒ: ");
+    fgets(s, sizeof(s), stdin);
+
+    for (int i = 0; s[i] != '\0'; i++) {
+        if (s[i] == 'a') s[i] = 'A';
+        if (s[i] == 'b') s[i] = 'B';
+    }
+    printf("Ð ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚: %s\n", s);
+
+    printf("=== Ð—ÐÐ”ÐÐÐ˜Ð• 2 ===\n");
+    int a[100][100];
+    int n;
+
+    printf("Ð Ð°Ð·Ð¼ÐµÑ€ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹: ");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        printf("Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ %d Ñ‡Ð¸ÑÐµÐ»(Ð°) Ð´Ð»Ñ ÑÑ‚Ñ€Ð¾ÐºÐ¸ %d Ñ‡ÐµÑ€ÐµÐ· Ð¿Ñ€Ð¾Ð±ÐµÐ»: ", n, i);
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &a[i][j]);
+        }
+    }
+
+    printf("\n--- Ð’ÐÐ¨Ð ÐœÐÐ¢Ð Ð˜Ð¦Ð ---\n");
+    for (int i = 0; i < n; i++) {
+        printf("|");
+        for (int j = 0; j < n; j++) {
+            printf(" %3d ", a[i][j]);
+        }
+        printf("|\n");
+    }
+    printf("--------------------\n");
+
+    int s1 = 0, s2 = 0;
+    for (int i = 0; i < n; i++) {
+        s1 += a[i][i];
+        s2 += a[i][n - 1 - i];
+    }
+
+    printf("Ð¡ÑƒÐ¼Ð¼Ð° Ð³Ð»Ð°Ð²Ð½Ð¾Ð¹ Ð´Ð¸Ð°Ð³Ð¾Ð½Ð°Ð»Ð¸: %d\n", s1);
+    printf("Ð¡ÑƒÐ¼Ð¼Ð° Ð¿Ð¾Ð±Ð¾Ñ‡Ð½Ð¾Ð¹ Ð´Ð¸Ð°Ð³Ð¾Ð½Ð°Ð»Ð¸: %d\n", s2);
+
+    int flag = 1;
+    if (s1 != s2) flag = 0;
+
+    for (int i = 0; i < n; i++) {
+        int r = 0, c = 0;
+        for (int j = 0; j < n; j++) {
+            r += a[i][j];
+            c += a[j][i];
+        }
+        if (r != s1 || c != s1) flag = 0;
+    }
+
+    if (flag) {
+        printf("Ð’ÐµÑ€Ð´Ð¸ÐºÑ‚: ÐœÐ°Ð³Ð¸Ñ‡ÐµÑÐºÐ¸Ð¹ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚.\n");
+    } else {
+        printf("Ð’ÐµÑ€Ð´Ð¸ÐºÑ‚: ÐžÐ±Ñ‹Ñ‡Ð½Ð°Ñ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ð°.\n");
+    }
+
     return 0;
 }
