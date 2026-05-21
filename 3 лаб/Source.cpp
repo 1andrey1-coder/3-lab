@@ -13,7 +13,7 @@ int main() {
 
     char s[100];
 
-    printf("=== ЗАДАНИЕ 1 ===\n");
+    printf("ЗАДАНИЕ 1:\n");
     printf("Введите строку: ");
     fgets(s, sizeof(s), stdin);
 
