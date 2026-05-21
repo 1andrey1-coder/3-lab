@@ -23,7 +23,7 @@ int main() {
     }
     printf("Результат: %s\n", s);
 
-    printf("=== ЗАДАНИЕ 2 ===\n");
+    printf("ЗАДАНИЕ 2:\n");
     int a[100][100];
     int n;
 
